@@ -7,3 +7,9 @@ venv
 
 # VSCode
 .vscode/
+
+# recipes
+data
+workspace
+repo
+meta.json
