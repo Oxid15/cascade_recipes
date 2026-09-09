@@ -1,0 +1,5 @@
+pandas
+numpy
+scikit-learn
+pydantic
+cascade-ml>=0.18,<0.19
