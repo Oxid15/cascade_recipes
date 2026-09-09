@@ -1,6 +1,6 @@
 # 01 - Baseline sweep
 
-> “I ran twelve variants last week - which one won, with which settings, and on which version of the features?”
+> "I ran six experiments last week - which one won, with which settings, and on which version of the features?"
 
 This example exercises:
 

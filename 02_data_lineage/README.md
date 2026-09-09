@@ -1,6 +1,6 @@
 # 02 - Data lineage
 
-> “Model 00003 regressed. Was it the code, or did the dataset change under me?”
+> "Model 00003 regressed. Was it the code, or did the dataset change under me?"
 
 This example exercises:
 
