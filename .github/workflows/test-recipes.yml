@@ -1,0 +1,44 @@
+name: Test recipes
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # At 8pm each Friday
+    - cron: "0 20 * * 5"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.14"]
+        cascade-version: ["0.16.0", "latest"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install all dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r tests/requirements-test.txt
+
+      - name: Install cascade-ml (${{ matrix.cascade-version }})
+        run: |
+          if [ "${{ matrix.cascade-version }}" = "latest" ]; then
+            pip install -U cascade-ml
+          else
+            pip install "cascade-ml==${{ matrix.cascade-version }}"
+          fi
+
+      - name: Show resolved cascade-ml version
+        run: python -c "import cascade; print(cascade.__version__)"
+
+      - name: Run recipes end to end
+        run: python -m pytest tests/ -v

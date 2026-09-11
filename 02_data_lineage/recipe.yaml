@@ -1,0 +1,16 @@
+steps:
+  - make_data.py
+  - version_data.py
+  - train_on_version.py
+outputs:
+  - data
+  - repo
+repo_path: repo
+data_lines:
+  dataline:
+    min_versions: 4
+model_lines:
+  ticket_router:
+    min_models: 2
+    metrics:
+      accuracy_score: {min: 0.0, max: 1.0}
