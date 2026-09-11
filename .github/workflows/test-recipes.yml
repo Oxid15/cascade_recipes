@@ -27,7 +27,7 @@ jobs:
       - name: Install all dependencies
         run: |
           pip install -r requirements.txt
-          pip install -r tests/requirements-test.txt
+          pip install -r tests/requirements.txt
 
       - name: Install cascade-ml (${{ matrix.cascade-version }})
         run: |
