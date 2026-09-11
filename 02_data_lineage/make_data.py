@@ -49,6 +49,7 @@ def rows(n, seed, messy):
 
 def write(name, data):
     path = os.path.join(HERE, "data", name)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
         for r in data:
             f.write(json.dumps(r) + "\n")
