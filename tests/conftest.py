@@ -3,7 +3,7 @@ import os
 
 import yaml
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def discover_recipes():

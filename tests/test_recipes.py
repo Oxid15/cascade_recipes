@@ -1,14 +1,14 @@
 import os
 import shutil
 import subprocess
-import sys
 
 from cascade.repos import Repo
+from cascade.lines import DataLine, ModelLine
 
 
 def clean(recipe_dir, manifest):
-    for rel in manifest.get("outputs", []):
-        path = os.path.join(recipe_dir, rel)
+    for name in manifest.get("outputs", {}).keys():
+        path = os.path.join(recipe_dir, name)
         if os.path.isdir(path):
             shutil.rmtree(path)
         elif os.path.exists(path):
@@ -31,12 +31,41 @@ def check_metrics(recipe_dir, line_name, index, meta, expected_metrics):
             assert value <= hi, f"{model} metric '{metric_name}'={value} is above {hi}"
 
 
+def check_line(root, name, expect):
+    if expect["type"] == "model_line":
+        line = ModelLine(os.path.join(root, name))
+    elif expect["type"] == "data_line":
+        line = DataLine(os.path.join(root, name))
+    else:
+        raise RuntimeError(f"{expect['type']} is an unknown line type")
+
+    item_num = expect.get("len")
+    if item_num is not None:
+        assert len(line) == item_num
+
+    for i in range(len(line)):
+        meta = line.load_obj_meta(i)[0]
+
+        if expect["type"] == "model_line":
+            check_metrics(root, name, i, meta, expect.get("metrics", {}))
+
+
+def check_repo(recipe_dir, name, expected):
+    repo = Repo(os.path.join(recipe_dir, name))
+    lines = repo.get_line_names()
+
+    assert len(lines) == len(expected["lines"])
+
+    for line in lines:
+        check_line(os.path.join(recipe_dir, name), line, expected["lines"][line])
+
+
 def test_recipe_runs_end_to_end(recipe_dir, manifest):
     clean(recipe_dir, manifest)
 
     for step in manifest["steps"]:
         result = subprocess.run(
-            [sys.executable, step],
+            step,
             cwd=recipe_dir,
             capture_output=True,
             text=True,
@@ -47,24 +76,14 @@ def test_recipe_runs_end_to_end(recipe_dir, manifest):
             f"--- stdout ---\n{result.stdout}\n--- stderr ---\n{result.stderr}"
         )
 
-    repo = Repo(os.path.join(recipe_dir, manifest.get("repo_path", "repo")))
-    line_names = repo.get_line_names()
+    for out_name in manifest.get("outputs", {}):
+        output = manifest["outputs"][out_name]
 
-    for name, expect in manifest.get("model_lines", {}).items():
-        assert name in line_names, f"expected model line '{name}' in {recipe_dir}/repo"
-        line = repo[name]
-        min_models = expect.get("min_models", 1)
-        assert (
-            len(line) >= min_models
-        ), f"{recipe_dir}/{name} has {len(line)} models, expected >= {min_models}"
-        for i in range(len(line)):
-            meta = line.load_obj_meta(i)[0]
-            check_metrics(recipe_dir, name, i, meta, expect.get("metrics", {}))
-
-    for name, expect in manifest.get("data_lines", {}).items():
-        assert name in line_names, f"expected data line '{name}' in {recipe_dir}/repo"
-        line = repo[name]
-        min_versions = expect.get("min_versions", 1)
-        assert (
-            len(line) >= min_versions
-        ), f"{recipe_dir}/{name} has {len(line)} versions, expected >= {min_versions}"
+        if output["type"] == "repo":
+            check_repo(recipe_dir, out_name, output)
+        elif output["type"] in ("model_line", "data_line"):
+            check_line(recipe_dir, out_name, output)
+        elif output["type"] == "folder":
+            assert os.path.exists(os.path.join(recipe_dir, out_name))
+        else:
+            raise RuntimeError(f"Unknown output type: {output['type']}")

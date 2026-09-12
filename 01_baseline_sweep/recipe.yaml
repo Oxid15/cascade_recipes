@@ -1,20 +1,25 @@
 steps:
-  - make_data.py
-  - train.py
+  - [python, make_data.py]
+  - [python, train.py]
+
 outputs:
-  - data
-  - repo
-repo_path: repo
-model_lines:
-  baseline_logreg:
-    min_models: 3
-    metrics:
-      f1_score: {min: 0.0, max: 1.0}
-      accuracy_score: {min: 0.0, max: 1.0}
-      roc_auc_score: {min: 0.0, max: 1.0}
-  baseline_tree:
-    min_models: 3
-    metrics:
-      f1_score: {min: 0.0, max: 1.0}
-      accuracy_score: {min: 0.0, max: 1.0}
-      roc_auc_score: {min: 0.0, max: 1.0}
+  data:
+    type: folder
+  repo:
+    type: repo
+    lines:
+      baseline_logreg:
+        type: model_line
+        len: 3
+        metrics:
+          f1_score: {min: 0.0, max: 1.0}
+          accuracy_score: {min: 0.0, max: 1.0}
+          roc_auc_score: {min: 0.0, max: 1.0}
+
+      baseline_tree:
+        type: model_line
+        len: 3
+        metrics:
+          f1_score: {min: 0.0, max: 1.0}
+          accuracy_score: {min: 0.0, max: 1.0}
+          roc_auc_score: {min: 0.0, max: 1.0}
