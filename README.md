@@ -29,6 +29,14 @@ Pin model to an exactly reproduced pipeline to understand which change in demo c
 
 Topics: `dataset versioning`, `data quality`, `reproducibility`
 
+### 03 - Scheduled Retrain
+
+> "Last Tuesday’s model is the current best. What config produced it, and can I re-run it with a single thing changed?"
+
+Run training scripts with different configs without changing the source code.
+
+Topics: `configuration management`, `reproducibility`, `log tracking`
+
 ## Contributing
 
 Contributions of new recipes are welcome!
