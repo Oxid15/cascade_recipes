@@ -1,0 +1,10 @@
+steps:
+  - [cascade, run, train.py, -y, --log]
+  - [cascade, run, train.py, -y, --log, --window_days, "14"]
+  - [cascade, run, train.py, -y, --log, --base, line/00000, --l2, "0.01"]
+outputs:
+  line:
+    type: model_line
+    len: 3
+    metrics:
+      accuracy_score: {min: 0.0, max: 1.0}
