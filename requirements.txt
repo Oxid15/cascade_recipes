@@ -2,4 +2,4 @@ pandas
 numpy
 scikit-learn
 pydantic
-cascade-ml>=0.16,<0.19
+cascade-ml>=0.17,<0.19
