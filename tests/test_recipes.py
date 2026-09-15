@@ -60,9 +60,18 @@ def check_repo(recipe_dir, name, expected):
         check_line(os.path.join(recipe_dir, name), line, expected["lines"][line])
 
 
+def check_outputs(expected, outputs):
+    assert len(expected) == len(outputs)
+
+    for exp, out in zip(expected, outputs):
+        if exp.get("not_in"):
+            assert exp["not_in"] not in out
+
+
 def test_recipe_runs_end_to_end(recipe_dir, manifest):
     clean(recipe_dir, manifest)
 
+    results = []
     for step in manifest["steps"]:
         result = subprocess.run(
             step,
@@ -71,6 +80,8 @@ def test_recipe_runs_end_to_end(recipe_dir, manifest):
             text=True,
             timeout=manifest.get("timeout_s", 300),
         )
+        results.append(result)
+
         assert result.returncode == 0, (
             f"{recipe_dir}/{step} exited with {result.returncode}\n"
             f"--- stdout ---\n{result.stdout}\n--- stderr ---\n{result.stderr}"
@@ -85,5 +96,7 @@ def test_recipe_runs_end_to_end(recipe_dir, manifest):
             check_line(recipe_dir, out_name, output)
         elif output["type"] == "folder":
             assert os.path.exists(os.path.join(recipe_dir, out_name))
+        elif output["type"] == "steps":
+            check_outputs(output["stdout"], [res.stdout for res in results])
         else:
             raise RuntimeError(f"Unknown output type: {output['type']}")

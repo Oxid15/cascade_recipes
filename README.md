@@ -37,6 +37,15 @@ Run training scripts with different configs without changing the source code.
 
 Topics: `configuration management`, `reproducibility`, `log tracking`
 
+### 04 - Data contracts
+
+> "The upstream vendor shipped a bad file at 3am. Which row, which field, and which pipeline stage noticed?"
+
+See how you can enable data validation to never miss an item with unexpected values and track it inside the pipeline
+down to a specific index with no effort.
+
+Topics: `data validation`, `error tracking`, `data tracking`
+
 ## Contributing
 
 Contributions of new recipes are welcome!

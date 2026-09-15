@@ -1,0 +1,8 @@
+steps:
+  - [python3, contract.py]
+
+outputs:
+  steps:
+    type: steps
+    stdout:
+      - not_in: unexpected
