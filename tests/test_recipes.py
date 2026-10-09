@@ -4,6 +4,7 @@ import subprocess
 
 from cascade.repos import Repo
 from cascade.lines import DataLine, ModelLine
+from cascade.workspaces import Workspace
 
 
 def clean(recipe_dir, manifest):
@@ -60,6 +61,16 @@ def check_repo(recipe_dir, name, expected):
         check_line(os.path.join(recipe_dir, name), line, expected["lines"][line])
 
 
+def check_workspace(recipe_dir, name, expected):
+    ws = Workspace(os.path.join(recipe_dir, name))
+    repos = ws.get_repo_names()
+
+    assert len(repos) == len(expected["repos"])
+
+    for repo in repos:
+        check_repo(os.path.join(recipe_dir, name), repo, expected["repos"][repo])
+
+
 def check_outputs(expected, outputs):
     assert len(expected) == len(outputs)
 
@@ -90,7 +101,9 @@ def test_recipe_runs_end_to_end(recipe_dir, manifest):
     for out_name in manifest.get("outputs", {}):
         output = manifest["outputs"][out_name]
 
-        if output["type"] == "repo":
+        if output["type"] == "workspace":
+            check_workspace(recipe_dir, out_name, output)
+        elif output["type"] == "repo":
             check_repo(recipe_dir, out_name, output)
         elif output["type"] in ("model_line", "data_line"):
             check_line(recipe_dir, out_name, output)
