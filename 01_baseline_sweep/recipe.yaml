@@ -23,3 +23,8 @@ outputs:
           f1_score: {min: 0.0, max: 1.0}
           accuracy_score: {min: 0.0, max: 1.0}
           roc_auc_score: {min: 0.0, max: 1.0}
+
+docs:
+  files:
+    - make_data.py
+    - train.py
