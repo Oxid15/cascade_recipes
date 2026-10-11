@@ -66,8 +66,10 @@ class Compiler:
 
         rst = (
             rst
-            + f"\n`Recipe {name} on GitHub <https://github.com/Oxid15/cascade_recipes/tree/master/{name}>`__\n"
+            + f"\n`Recipe {name} on GitHub <https://github.com/Oxid15/cascade_recipes/tree/master/{name}>`__"
         )
+
+        rst += " • "
 
         rst += "`Cascade Recipes GitHub repository <https://github.com/Oxid15/cascade_recipes/>`__\n"
 
