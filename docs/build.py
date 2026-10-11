@@ -59,10 +59,17 @@ class Compiler:
 
         return rst
 
-    def compile(self, files: list[str], title: str) -> str:
+    def compile(self, name: str, files: list[str], title: str) -> str:
         rst = ""
         rst = rst + title + "\n"
         rst = rst + "#" * len(title) + "\n"
+
+        rst = (
+            rst
+            + f"\n`Recipe {name} on GitHub <https://github.com/Oxid15/cascade_recipes/tree/master/{name}>`__\n"
+        )
+
+        rst += "`Cascade Recipes GitHub repository <https://github.com/Oxid15/cascade_recipes/>`__\n"
 
         for file in files:
             with open(file, "r") as f:
@@ -118,10 +125,11 @@ if __name__ == "__main__":
                 f"{os.path.join(d, 'recipe.yaml')} should have non-empty docs.title key with the posts title"
             )
 
-        files = [os.path.join(d, f) for f in files]
-        rst = compiler.compile(files, title)
-
         recipe_name = os.path.basename(d)
+        files = [os.path.join(d, f) for f in files]
+
+        rst = compiler.compile(recipe_name, files, title)
+
         with open(os.path.join(build_dir, f"{recipe_name}.rst"), "w") as f:
             f.write(rst)
 
