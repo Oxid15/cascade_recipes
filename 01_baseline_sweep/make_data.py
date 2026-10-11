@@ -1,6 +1,4 @@
 # %% [rst]
-# Track ML experiments with Cascade
-# #################################
 #
 #   I ran six experiments last week - which one won, with which settings, and on which version of the features?
 #
@@ -70,7 +68,7 @@ def make_df(n: int = 2000, seed: int = 0) -> pd.DataFrame:
 
 
 # %% [rst]
-# Run `make_data.py` to generate a .csv for our next steps.
+# Run ``make_data.py`` to generate a .csv for our next steps.
 
 # %%
 

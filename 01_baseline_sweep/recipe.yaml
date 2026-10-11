@@ -25,6 +25,7 @@ outputs:
           roc_auc_score: {min: 0.0, max: 1.0}
 
 docs:
+  title: 01 - Track ML experiments with Cascade
   files:
     - make_data.py
     - train.py
