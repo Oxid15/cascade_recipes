@@ -10,9 +10,9 @@
 # hard to keep those results stored and accessible. In real life they tend to pile up very fast
 # and memorizing them is not enough.
 # At enterprise scale there are special experiment tracking tools for that. Even smaller companies
-# can use som hosted solutions like ClearML or set up their own MLflow. However, at small-scale
+# can use some hosted solutions like ClearML or set up their own MLflow. However, at small-scale
 # MLOps is usually underdeveloped and for individual ML engineers or small teams it can be hard to
-# set up an infrastructure fot that.
+# set up an infrastructure for that.
 # Cascade was built to serve those people - it allows local-first experiment tracking
 # without complex setups, databases and other infrastructure.
 #

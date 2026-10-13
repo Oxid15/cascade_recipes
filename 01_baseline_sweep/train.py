@@ -91,7 +91,7 @@ def xy(ds):
 # ML Model Tracking
 # *****************
 # Here we build a model similarly to a dataset. We use ``cascade.utils.SkModel`` to wrap
-# a scikit-learn pipeline. Notice how config is used to configurate the model and also
+# a ``scikit-learn`` pipeline. Notice how config is used to configure the model and also
 # passed as keywords to the wrapper. This will track all those values as Model's parameters
 # and can be queried and analyzed afterwards.
 
@@ -134,7 +134,7 @@ SWEEP = [
 # %% [rst]
 # And then we finally bring everything together - build pipeline and model, train
 # , test, add description and tags, then link dataset to the model and save it.
-# ModelLine inside the Repo will save SkModel's metadata, params, metrics and artifact
+# ModelLine inside the Repo will save SkModel's metadata, parameters, metrics and artifact
 # you can later load and run once again.
 
 # %%
