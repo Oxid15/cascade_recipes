@@ -15,11 +15,11 @@ class Compiler:
     def make_rst_block(self, block: str) -> str:
         rst = ""
         for line in block.split("\n"):
-            if line.startswith("[rst]"):
+            if line.strip().startswith("[rst]"):
                 continue
-            if line.startswith("# "):
-                line = line[2:]
-            if line == "#":
+            if line.strip().startswith("# "):
+                line = line.strip()[2:]
+            if line.strip() == "#":
                 line = ""
 
             rst += line
@@ -29,7 +29,7 @@ class Compiler:
         return rst
 
     def make_code_block(self, block: str) -> str:
-        code_block = ".. code-block:: python\n\n"
+        code_block = ".. code-block:: python\n"
         for line in block.split("\n"):
             code_block += "    "
             code_block += line
@@ -78,10 +78,9 @@ class Compiler:
                 text = f.read()
 
             for block in text.split("# %%"):
-                block = block.strip()
                 if not block:
                     continue
-                elif block.startswith("[rst]"):
+                elif block.strip().startswith("[rst]"):
                     rst += self.make_rst_block(block)
                 else:
                     rst += self.make_code_block(block)
