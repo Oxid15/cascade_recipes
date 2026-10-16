@@ -15,3 +15,11 @@ outputs:
         len: 2
         metrics:
           accuracy_score: {min: 0.0, max: 1.0}
+
+docs:
+  title: 02 - Data Lineage
+  files:
+    - make_data.py
+    - pipeline.py
+    - version_data.py
+    - train_on_version.py

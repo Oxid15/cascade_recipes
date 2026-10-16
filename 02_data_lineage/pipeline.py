@@ -1,14 +1,14 @@
-"""
-Shared pipeline definition for the ticket dataset.
+# %% [rst]
+# Data Transformation Pipeline
+# ****************************
+#
+# Here is the pipeline definition in a separate file for the ticket dataset.
 
-Kept in its own module because `DataLine.save` pickles the pipeline, and pickle
-needs every stage class to be importable by qualified name.
-"""
-
+# %%
 import json
 import os
 
-from cascade.data import Dataset, Filter, Modifier
+from cascade.data import Dataset, Filter, Modifier, Sampler
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -19,6 +19,13 @@ CANONICAL = {
     "question": "question",
     "feature": "feature",
 }
+
+# %% [rst]
+# First we inherit ``cascade.data.Dataset`` to create simple JSON reading custom data source.
+# Main methods of a custom ``Dataset`` to define are ``get`` and ``__len__``. There is also an
+# ability to customize its metadata using ``get_meta`` method.
+# Metadata can then be tracked when we link a dataset to a model.
+# %%
 
 
 class TicketDump(Dataset):
@@ -43,6 +50,15 @@ class TicketDump(Dataset):
         return meta
 
 
+# %% [rst]
+# We build a pipeline by stacking ``Modifier``s on top of a ``Dataset``.
+# Each modifier can call its dataset, perform some operations over the results
+# of the previous stage and return.
+
+
+# %%
+
+
 class NormalizeLabels(Modifier):
     """Fold 'BUG' / 'Billing' / 'account ' into the canonical taxonomy."""
 
@@ -52,11 +68,21 @@ class NormalizeLabels(Modifier):
         return item
 
 
-class Dedup(Modifier):
-    """Drop rows whose id was seen before. Index map is built eagerly."""
+# %% [rst]
+# Modifiers that change dataset's length are called ``Sampler``s. This sampler is
+# removing duplicate rows. We pass new length to sampler's parent constructor
+# so that it will be used in ``__len__`` automatically.
+
+
+# %%
+
+
+class Dedup(Sampler):
+    """
+    Drop rows whose id was seen before
+    """
 
     def __init__(self, dataset, **kwargs):
-        super().__init__(dataset, **kwargs)
         seen = set()
         self._keep = []
         for i in range(len(self._dataset)):
@@ -65,11 +91,16 @@ class Dedup(Modifier):
                 seen.add(tid)
                 self._keep.append(i)
 
+        super().__init__(dataset, len(self._keep), **kwargs)
+
     def get(self, index):
         return self._dataset[self._keep[index]]
 
-    def __len__(self):
-        return len(self._keep)
+
+# %% [rst]
+# We also use default cascade.data.Filter with a filter function that returns `bool`.
+
+# %%
 
 
 def not_low_priority(item):
