@@ -98,7 +98,7 @@ class Dedup(Sampler):
 
 
 # %% [rst]
-# We also use default cascade.data.Filter with a filter function that returns `bool`.
+# We also use default ``cascade.data.Filter`` with a filter function that returns ``bool``.
 
 # %%
 

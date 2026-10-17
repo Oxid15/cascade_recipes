@@ -71,7 +71,7 @@ def main():
     show(dl, ds2, "w2 clean source (same pipeline shape)")
 
     # %% [rst]
-    # This week gets a major bump since pipelie also gets ``Filter`` step.
+    # This week gets a major bump since pipeline also gets ``Filter`` step.
 
     # %%
 

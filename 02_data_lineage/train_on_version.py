@@ -2,7 +2,7 @@
 # Pin the Model to Dataset Version
 # ********************************
 #
-# Trains two classifiers on two different DataLine versions and records
+# Trains two classifiers on two different ``DataLine`` versions and records
 # the link, so ``cascade query`` can answer "which data version did this model see?".
 
 # %%
@@ -63,7 +63,7 @@ if __name__ == "__main__":
 # Conclusion
 # **********
 #
-# In this recipe dataset versioning in Cascade is excercised.
+# In this recipe dataset versioning in Cascade is exercised.
 # It is able to automatically version and track datasets and processing pipeline.
 # You can also link data to the model you are training and always go back and reproduce
 # your machine learning experiment exactly.
