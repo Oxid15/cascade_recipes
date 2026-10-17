@@ -85,8 +85,8 @@ class Dedup(Sampler):
     def __init__(self, dataset, **kwargs):
         seen = set()
         self._keep = []
-        for i in range(len(self._dataset)):
-            tid = self._dataset[i]["id"]
+        for i in range(len(dataset)):
+            tid = dataset[i]["id"]
             if tid not in seen:
                 seen.add(tid)
                 self._keep.append(i)
